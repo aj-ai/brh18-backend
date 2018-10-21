@@ -5,14 +5,22 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var dotenv = require('dotenv').config();
 var passport = require('passport');
+var mongoose = require('mongoose');
 require('./config/passport');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var authRouter = require('./routes/auth');
 var hostRouter = require('./routes/host');
+var partyRouter = require('./routes/party');
 
 var app = express();
+
+// mongoose x mongodb
+mongoose.connect('mongodb://localhost/brh18', {
+  useNewUrlParser: true
+});
+mongoose.Promise = global.Promise;
 
 // Initialize Passport!  Also use passport.session() middleware, to support
 // persistent login sessions (recommended).
@@ -33,6 +41,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/auth', authRouter);
 app.use('/host', hostRouter);
+app.use('/party', partyRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
